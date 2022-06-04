@@ -7,5 +7,5 @@ $python3 detect_from_image.py
 $python3 detect_from_video.py
 
 this will create a workspace 
-then Training your Model like this : https://github.com/dusty-nv/jetson-inference/blob/master/docs/pytorch-collect-detection.md
+then Train your Model like this : https://github.com/dusty-nv/jetson-inference/blob/master/docs/pytorch-collect-detection.md
 
