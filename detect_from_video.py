@@ -7,9 +7,8 @@ import cv2
 import numpy as np
 
 def main(projectname,filename):
-    create_workspace.generate(projectname)
     counter=0
-    cap = cv2.VideoCapture(filename+'.mp4')
+    cap = cv2.VideoCapture(filename+'.avi')
     if (cap.isOpened()== False): 
         print("Error opening video stream or file")
     frame_width = int(cap.get(3))
@@ -19,25 +18,30 @@ def main(projectname,filename):
     all_files = []
     while(cap.isOpened()):
         ret, frame = cap.read()
-        rawFrame = frame.copy()
-        actual_filename = filename+"_"+counter
-        if ret == True:
-            detected = pcv_detection.detect(actual_filename)
+        if frame is not None:
+            rawFrame = frame.copy()
+            actual_filename = filename+"9"+str(counter)
+            detected = pcv_detection.detect(frame,projectname)
             if len(detected.annotations) >0:
-                dataset_xml_generator.generate(actual_filename,frame_width,frame_height,detected.annotations)
+                dataset_xml_generator.generate(projectname,actual_filename,frame_width,frame_height,detected.annotations)
                 out_detected.write(detected.detected_image)
+                cv2.imshow('rawimage',detected.detected_image) 
                 out_dilated.write(detected.dilated_image)
-                cv2.imwrite("./JPEGImages/"+actual_filename+".jpg", rawFrame)
+                cv2.imwrite("./"+projectname+"/JPEGImages/"+actual_filename+".jpg", rawFrame)
                 all_files.append(actual_filename)
                 counter+=1
+        else:
+            break
         # Press Q on keyboard to  exit
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
-        else: 
-            break
+
     create_workspace.conclued(all_files,projectname)
     cap.release()
 
 if __name__ == '__main__':
-    filename = "dsjjzfioj"
-    main("BATAVIA",filename)
+    projectname = "BATAVIA"
+    create_workspace.generate(projectname)
+    filename = "1"
+    main(projectname,"1")
+

@@ -8,7 +8,7 @@ from src.detectedFrame import DetectedFrame
 from src.annotation import Annotation
 
 
-def detect(img,filename):
+def detect(img,plantName):
 
     if np.average(img) < 50:
         pcv.fatal_error("Night Image")
@@ -76,8 +76,9 @@ def detect(img,filename):
     for i, obj in enumerate(objects):
         height, width = np.shape(img)[:2]
         x, y, w, h = cv2.boundingRect(obj)
-        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 5)
-        _annotations.append(Annotation(filename,x,y,(x+w),(y+h)))
+        if w>100 and h>100:
+            cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 5)
+            _annotations.append(Annotation(plantName,x,y,(x+w),(y+h)))
 
     return DetectedFrame(dilated,img,_annotations)
         
